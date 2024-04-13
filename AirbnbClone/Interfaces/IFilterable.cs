@@ -1,6 +1,6 @@
 ﻿namespace AirbnbClone.Interfaces
 {
-    public class IFilterable
+    public interface IFilterable
     {
     }
 }
