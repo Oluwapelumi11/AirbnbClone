@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirbnbClone.Models.DataLayer;
@@ -15,7 +16,7 @@ public partial class User
     [Column("username")]
     [StringLength(100)]
     [Unicode(false)]
-    public string? Username { get; set; }
+    public string? Email { get; set; }
 
     [Column("fullname")]
     [StringLength(255)]
@@ -25,6 +26,7 @@ public partial class User
     [Column("password")]
     [StringLength(255)]
     [Unicode(false)]
+    [JsonIgnore]
     public string? Password { get; set; }
 
     [Column("imgUrl")]

@@ -2,6 +2,7 @@
 using AirbnbClone.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AirbnbClone.Interfaces
 {
@@ -9,13 +10,6 @@ namespace AirbnbClone.Interfaces
     {
         public string CreateToken(User user);
 
-        public string ClaimIdentity(IdentityRole identity);
-
-        public IActionResult Login(UserDto user);
-
-        public IActionResult Register(UserDto user);
-
-
-
+        public int GetId(ClaimsIdentity identity);
     }
 }

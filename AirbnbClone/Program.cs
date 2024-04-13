@@ -1,4 +1,6 @@
+using AirbnbClone.Interfaces;
 using AirbnbClone.Models.DataLayer;
+using AirbnbClone.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,34 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AirbnbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("base")));
+
+builder.Services.AddScoped<IAuthenticateable, AuthenticationService>( options=> new AuthenticationService( 
+    jwtSecret: builder.Configuration["JwtCredentials:jwtSecret"]!,
+    issuer: builder.Configuration["JwtCredentials:issuer"]!,
+    audience: builder.Configuration["JwtCredentials:issuer"]!
+    ));
+builder.Services.AddScoped<IHostable, HostService>();
+builder.Services.AddScoped<IListable, ListingService>();
+builder.Services.AddScoped<IReviewable, ReviewService>();
+builder.Services.AddScoped<IManageableUser, UserService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(dp =>
+{
+    dp.WithOrigins(builder.Configuration["AllowedOrigins"]!);
+    dp.AllowAnyHeader();
+    dp.AllowAnyMethod();
+});
+options.AddPolicy(name: "AnyOrigins",
+    ap =>
+{
+    ap.AllowAnyOrigin();
+    ap.AllowAnyHeader();
+    ap.AllowAnyMethod();
+});
+});
+
 
 
 
