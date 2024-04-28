@@ -68,30 +68,34 @@ public partial class Listing
     [Column("statValue", TypeName = "decimal(3, 2)")]
     public decimal? StatValue { get; set; }
 
+   [Column("likedbyusers")]
+    [StringLength(100)]
+    public string? LikedByUsers { get; set; }
+
     [ForeignKey("HostId")]
     [InverseProperty("Listings")]
     public virtual Host? Host { get; set; }
 
     [InverseProperty("Listing")]
-    public virtual ICollection<ListingAmenity> ListingAmenities { get; set; } = new List<ListingAmenity>();
+    public virtual ICollection<ListingAmenity?>? ListingAmenities { get; set; } 
 
     [InverseProperty("Listing")]
     public virtual ListingFilter? ListingFilter { get; set; }
 
     [InverseProperty("Listing")]
-    public virtual ICollection<ListingImgUrl> ListingImgUrls { get; set; } = new List<ListingImgUrl>();
+    public virtual ICollection<ListingImgUrl?>? ListingImgUrls { get; set; }
 
     [InverseProperty("Listing")]
-    public virtual ICollection<ListingLabel> ListingLabels { get; set; } = new List<ListingLabel>();
+    public virtual ICollection<ListingLabel?>? ListingLabels { get; set; }
 
     [ForeignKey("LocationId")]
     [InverseProperty("Listings")]
     public virtual Location? Location { get; set; }
 
     [InverseProperty("Listing")]
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public virtual ICollection<Review?>? Reviews { get; set; } 
 
     [ForeignKey("ListingId")]
     [InverseProperty("Listings")]
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<User?>? Users { get; set; }
 }

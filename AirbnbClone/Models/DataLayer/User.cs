@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirbnbClone.Models.DataLayer;
@@ -11,12 +10,12 @@ public partial class User
 {
     [Key]
     [Column("id")]
-    public int Id { get; set; }
+    public int? _id { get; set; }
 
     [Column("username")]
     [StringLength(100)]
     [Unicode(false)]
-    public string? Email { get; set; }
+    public string? Username { get; set; }
 
     [Column("fullname")]
     [StringLength(255)]
@@ -26,7 +25,6 @@ public partial class User
     [Column("password")]
     [StringLength(255)]
     [Unicode(false)]
-    [JsonIgnore]
     public string? Password { get; set; }
 
     [Column("imgUrl")]
@@ -40,8 +38,6 @@ public partial class User
     [Column("hostMsg")]
     public int? HostMsg { get; set; }
 
-    [InverseProperty("Reviewer")]
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     [ForeignKey("UserId")]
     [InverseProperty("Users")]

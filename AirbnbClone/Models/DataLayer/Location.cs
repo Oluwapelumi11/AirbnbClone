@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirbnbClone.Models.DataLayer;
@@ -40,5 +41,6 @@ public partial class Location
     public decimal? Lan { get; set; }
 
     [InverseProperty("Location")]
-    public virtual ICollection<Listing> Listings { get; set; } = new List<Listing>();
+    [JsonIgnore]
+    public virtual ICollection<Listing?>? Listings { get; set; }
 }

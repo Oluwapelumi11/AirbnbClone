@@ -1,15 +1,16 @@
 ﻿using AirbnbClone;
+using AirbnbClone.Models.DTOs;
 
 namespace AirbnbClone.Interfaces
 {
     public interface IHostable
     {
-        Task<Models.DataLayer.Host> Create(Models.DataLayer.Host host);
+        Task<Models.DataLayer.Host> Create(HostDto host);
 
-        Task<Models.DataLayer.Host> Update(Models.DataLayer.Host oldhost, Models.DataLayer.Host newhost);
+        Task<Models.DataLayer.Host?> Update(HostDto newhost);
 
-        Task<Models.DataLayer.Host?> Delete(Models.DataLayer.Host oldhost, Models.DataLayer.Host newhost);
+        Task Delete(int id);
 
-        Task<Models.DataLayer.Host> GetbyId(int Id);
+        Task<HostDto?> GetbyId(int Id);
     }
 }

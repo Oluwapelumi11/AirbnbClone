@@ -32,8 +32,12 @@ public partial class AirbnbContext : DbContext
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Order> Orders { get; set; }
 
- 
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-29GRVC2\\SQLSERVERNEW;Database=AirbnbCloneDb;User Id=sa;Password=mad,man$;TrustServerCertificate=true;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Host>(entity =>
@@ -120,12 +124,12 @@ public partial class AirbnbContext : DbContext
 
             entity.HasOne(d => d.Listing).WithMany(p => p.Reviews).HasConstraintName("FK__Review__listing___4CA06362");
 
-            entity.HasOne(d => d.Reviewer).WithMany(p => p.Reviews).HasConstraintName("FK__Review__reviewer__4D94879B");
+            //entity.HasOne(d => d.Reviewer).WithMany(p => p.Reviews).HasConstraintName("FK__Review__reviewer__4D94879B");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83FC7291D1E");
+            entity.HasKey(e => e._id).HasName("PK__Users__3213E83FC7291D1E");
         });
 
         OnModelCreatingPartial(modelBuilder);

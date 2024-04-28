@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +19,7 @@ public partial class ListingLabel
     [Unicode(false)]
     public string Label { get; set; } = null!;
 
+    [JsonIgnore]
     [ForeignKey("ListingId")]
     [InverseProperty("ListingLabels")]
     public virtual Listing Listing { get; set; } = null!;

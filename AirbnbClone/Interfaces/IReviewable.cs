@@ -9,8 +9,8 @@ namespace AirbnbClone.Interfaces
 
         Task<Listing?> Add(Listing listing, Review review);
 
-        Task<Listing?> Delete(Review review);
+        Task<Listing?> Delete(Listing listing, Review review);
 
-        Task<Review> Update(Review review);
+        Task<Review?> Update(Review review);
     }
 }

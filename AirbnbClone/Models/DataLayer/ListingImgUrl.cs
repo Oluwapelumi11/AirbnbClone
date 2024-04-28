@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirbnbClone.Models.DataLayer;
@@ -21,5 +22,6 @@ public partial class ListingImgUrl
 
     [ForeignKey("ListingId")]
     [InverseProperty("ListingImgUrls")]
-    public virtual Listing Listing { get; set; } = null!;
+    [JsonIgnore]
+    public virtual Listing? Listing { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,5 +22,6 @@ public partial class ListingAmenity
 
     [ForeignKey("ListingId")]
     [InverseProperty("ListingAmenities")]
+    [JsonIgnore]
     public virtual Listing Listing { get; set; } = null!;
 }
