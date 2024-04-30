@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,10 +11,12 @@ public partial class ListingFilter
 {
     [Key]
     [Column("listing_id")]
-    public int ListingId { get; set; }
+    public int? ListingId { get; set; }
 
     [Column("likeByUser")]
     public int? LikeByUser { get; set; }
+
+    public int? page { get; set; } 
 
     [Column("place")]
     [StringLength(100)]
@@ -32,11 +34,14 @@ public partial class ListingFilter
     [Column("isPetAllowed")]
     public bool? IsPetAllowed { get; set; }
 
+
+    [JsonIgnore]
     [ForeignKey("HostId")]
     [InverseProperty("ListingFilters")]
     public virtual Host? Host { get; set; }
 
+    [JsonIgnore]
     [ForeignKey("ListingId")]
     [InverseProperty("ListingFilter")]
-    public virtual Listing Listing { get; set; } = null!;
+    public virtual Listing? Listing { get; set; } = null!;
 }

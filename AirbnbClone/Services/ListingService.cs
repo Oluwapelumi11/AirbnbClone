@@ -303,8 +303,7 @@ namespace AirbnbClone.Services
                 }
 
 
-            Console.WriteLine($"Listingsdto counted =<{listingDtos?.Count}");
-            Console.WriteLine($"Listings counted =<{listings?.Count}");
+           
             }
             return listingDtos;
         }
@@ -505,6 +504,132 @@ namespace AirbnbClone.Services
             return dto;
         }
 
-    }
 
+
+
+
+
+        public async Task<List<CreateListingDto>> Filter(ListingFilter filter)
+        {
+            if (filter == null) return null!;
+            var listings = new HashSet<Listing>();
+            List<CreateListingDto> listingDtos = new List<CreateListingDto> { };
+
+            List<Listing>? labels,amenities,place,liked;
+            if (!string.IsNullOrEmpty(filter.Label))
+            {
+                string filterLabelLower = filter.Label.ToLower();
+                labels = await _context.Listings
+                            .Where(l => l.ListingLabels!.Any(ll =>
+                                ll.Label.ToLower().Contains(filterLabelLower) ||
+                                ll.Label.ToLower().StartsWith(filterLabelLower) ||
+                                ll.Label.ToLower().EndsWith(filterLabelLower)))
+                            .ToListAsync();
+                if (labels != null)
+                {
+                    foreach(var label in labels)
+                    {
+                        listings.Add(label);
+                    }
+                }
+            }
+
+                if (!string.IsNullOrEmpty(filter.Label))
+                {
+                    string filterAmenityLower = filter.Label.ToLower();
+                    amenities = await _context.Listings
+                                    .Where(l => l.ListingAmenities!.Any(ll =>
+                                        ll.Amenity.ToLower().Contains(filterAmenityLower) ||
+                                        ll.Amenity.ToLower().StartsWith(filterAmenityLower) ||
+                                        ll.Amenity.ToLower().EndsWith(filterAmenityLower)))
+                                    .ToListAsync();
+                if (amenities != null)
+                {
+                    foreach (var a in amenities)
+                    {
+                        listings.Add(a);
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(filter.Place))
+            {
+                string filterPlaceLower = filter.Place.ToLower();
+                place = await _context.Listings
+                            .Where(l => l.Location!.Address != null &&
+                                        (l.Location.Address.ToLower().Contains(filterPlaceLower) ||
+                                        l.Location.Address.ToLower().StartsWith(filterPlaceLower) ||
+                                        l.Location.Address.ToLower().EndsWith(filterPlaceLower)))
+                            .ToListAsync();
+
+                if (place != null)
+                {
+                    foreach (var label in place)
+                    {
+                        listings.Add(label);
+                    }
+                }
+
+            }
+            if (!string.IsNullOrEmpty(filter.LikeByUser.ToString()) )
+            {
+                liked = await _context.Listings
+                                .Where(l => l.LikedByUsers!.Contains(Convert.ToString(filter!.LikeByUser!)!)).ToListAsync();
+                if (liked != null)
+                {
+                    foreach (var label in liked)
+                    {
+                        listings.Add(label);
+                    }
+                }
+            }
+
+            if (listings != null)
+            {
+                foreach (var listing in listings)
+                {
+
+                    CreateListingDto listingDto = new CreateListingDto
+                    {
+                        _id = listing.ListingId,
+                        Type = listing.Type,
+                        Name = listing.Name,
+                        Price = listing.Price,
+                        Summary = listing.Summary,
+                        Capacity = listing.Capacity,
+                        RoomType = listing.RoomType,
+                        LikedByUsers = listing.LikedByUsers != null ? listing.LikedByUsers.Split(",").ToList() : new List<string>(),
+                        ImgUrls = await _context.ListingImgUrls.Where(i => i.ListingId == listing.ListingId).Select(l => l.ImgUrl!).ToListAsync(),
+                        Bathrooms = listing.Bathrooms,
+                        Bedrooms = listing.Bedrooms,
+                        Host = await _host.GetbyId(listing.HostId!.Value),
+                        Loc = await GetLocationById(listing.LocationId.Value),
+                        StatReviews = new StatReviewsDTO
+                        {
+                            Cleanliness = listing.StatCleanliness,
+                            Communication = listing.StatCommunication,
+                            CheckIn = listing.StatCheckIn,
+                            Accuracy = listing.StatAccuracy,
+                            Value = listing.StatValue,
+                            Location = listing.StatLocation
+                        },
+
+                        Amenities = await _context.ListingAmenities.Where(l => l.ListingId == listing.ListingId).Select(l => l.Amenity).ToListAsync(),
+                        Labels = await _context.ListingLabels.Where(l => l.ListingId == listing.ListingId).Select(l => l.Label).ToListAsync(),
+                        Reviews = await _context.Reviews.Where(l => l.ListingId == listing.ListingId).Select(l => ConvertToReviewDto(l)).ToListAsync(),
+
+                    };
+                    listingDtos.Add(listingDto);
+
+                }
+
+
+
+            }
+            return listingDtos;
+
+        }
+
+    }
 }
+

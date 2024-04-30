@@ -5,7 +5,8 @@ namespace AirbnbClone.Interfaces
 {
     public interface IListable
     {
-         Task<List<CreateListingDto>> Filter(string label);
+        Task<List<CreateListingDto>> Filter(ListingFilter filter);
+
         Task<Listing> Create(CreateListingDto listing);
         Task<Listing?> Update(CreateListingDto listing);
         Task<Listing?> Delete(int id);
